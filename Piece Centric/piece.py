@@ -7,10 +7,13 @@ class Piece:
         self.y = y
 
     
-    @abstractmethod
     def move(self,x,y):
-        pass
+        if self.isLegalmove(x,y):
+            self.x = x
+            self.y = y
+        else:
+            print("Illegal Move")
     
     @abstractmethod
-    def isLegalmove(self,x,y):
+    def canMoveTo(self,x,y):
         pass
