@@ -1,14 +1,16 @@
 from bishop import Bishop
 from piece import Piece
+from chessboard import Chessboard
 
 import sys, pygame
 from pygame.locals import *
 
 white = (255,255,255)
-black = (0,0,0)
-size = width, height = 500, 500
-cellWidth = int(width/8)
-cellHeight = int(height/8)
+black = (255,100,100)
+scale = 800
+size = scale, scale
+cellScale = int(scale/8)
+
 
 pygame.init()
 screen = pygame.display.set_mode(size)
@@ -16,22 +18,29 @@ screen = pygame.display.set_mode(size)
 
 def drawLine(x,y,color1,color2):
     for i in range(8):
-        cell = pygame.Rect(x,y,cellWidth,cellHeight)
+        cell = pygame.Rect(x,y,cellScale,cellScale)
         if(i%2):
             pygame.draw.rect(screen,color2,cell)
         else:
             pygame.draw.rect(screen,color1,cell)
-        x+=cellWidth
+        x+=cellScale
 
 yCount = 0
 xCount = 0
 for i in range(8):
     if(i%2):
         drawLine(xCount,yCount,black,white)
-        yCount += cellHeight
+        yCount += cellScale
     else:
         drawLine(xCount,yCount,white,black)
-        yCount += cellHeight
+        yCount += cellScale
+
+
+game = Chessboard(cellScale,"rnbkqbnr/pppppppp/////PPPPPPPP/RNBKQBNR")
+game.display(screen)
+"""image = pygame.image.load(r'sprites/white_king.png')
+image = pygame.transform.scale(image, (cellScale,cellScale))
+screen.blit(image, (0, 0))"""
 
 while 1:
 
