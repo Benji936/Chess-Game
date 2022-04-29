@@ -10,11 +10,16 @@ class Piece:
         self.image = None
     
     def move(self,x,y):
-        if self.isLegalmove(x,y):
+        if self.canMoveTo(x,y):
             self.x = x
             self.y = y
+            return 1
         else:
-            print("Illegal Move")
+            return 0
+
+    def display(self,screen,scale):
+        screen.blit(self.image,(self.x*scale,self.y*scale))
+        
     
     @abstractmethod
     def canMoveTo(self,x,y):
