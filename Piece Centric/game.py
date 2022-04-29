@@ -50,13 +50,25 @@ def  drawBoard():
             yCount += cellScale
 
 
+def getPiece(x,y,board):
+    for piece in board:
+        if piece.x == x and piece.y == y:
+            return piece
+    return 0
 
-
+def movePiece(piece,x,y):
+    drawSquare(piece.x,piece.y,cellScale)
+    if(piece.move(x,y)):
+        drawSquare(x,y,cellScale)
+    piece.display(screen,game.scale)
 
 
 game = Chessboard(cellScale,"rnbkqbnr/pppppppp/////PPPPPPPP/RNBKQBNR")
 drawBoard()
 game.display(screen)
+
+pieceSelected = 0
+select = getPiece(0,0,game.pieces)
 
 
 while 1:
@@ -70,14 +82,14 @@ while 1:
             pos1 = int(pos[0]/cellScale)
             pos2 = int(pos[1]/cellScale)
 
-            drawSquare(game.pieces[0].x,game.pieces[0].y,cellScale)
-            if(game.pieces[0].move(pos1,pos2)):
-                drawSquare(pos1,pos2,cellScale)
-            game.pieces[0].display(screen,game.scale)
+            if pieceSelected:
+                movePiece(select,pos1,pos2)
+                pieceSelected = 0
+            else:
+                select = getPiece(pos1,pos2,game.pieces)
+                if(select != 0): pieceSelected = 1
 
-            
-            
 
-    
+
     pygame.display.flip()
     
