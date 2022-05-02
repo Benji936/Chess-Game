@@ -14,10 +14,6 @@ pieces = {"k" : King(0,0,"white"), "K" : King(0,0,"black"), "q" : Queen(0,0,"whi
 
 class Chessboard:
 
-    def loadImages(self):
-        for piece in self.pieces:
-            piece.loadImage(self.scale)
-
     def convertStringInBoard(self,string):
         x = 0
         y = 0
@@ -35,17 +31,24 @@ class Chessboard:
                     self.pieces.append(copy.copy(pieces[char]))
                     x+=1
         
-
+    def getPiece(self,x,y):
+        for piece in self.pieces:
+            if piece.x == x and piece.y == y:
+                return piece
+        return 0
 
 
     def __init__(self,scale,start):
-        self.images = {}
+        #Peut être plutot utilisé un Set qu'une liste
+        #Ou alors un dictionnaire avec l'indice du tableau
         self.pieces = []
         self.scale = scale 
         self.convertStringInBoard(start)
-        self.loadImages()
     
     def display(self,screen):
         for piece in self.pieces:
             screen.blit(piece.image,(piece.x*self.scale,piece.y*self.scale))
 
+
+
+    #reverse display: you need just to substract by the size of height for y and width for x and get their absolute value to reverse the positions
