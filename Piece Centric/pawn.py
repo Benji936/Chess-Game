@@ -1,4 +1,5 @@
 import pygame
+import copy
 from piece import Piece
 
 class Pawn(Piece):
@@ -13,9 +14,10 @@ class Pawn(Piece):
                 if piece:
                     if piece.color == self.color:
                         return 0
-                    board.pieces.remove(piece)
-                    self.x = x
-                    self.y = y
+                    board.pieces[x*8+y] = copy.copy(self)
+                    del board.pieces[self.x*8+self.y]
+                    board.pieces[x*8+y].x = x
+                    board.pieces[x*8+y].y = y
                     return 1
                 else:
                     return 0
@@ -25,8 +27,10 @@ class Pawn(Piece):
                 else:
                     piece = board.getPiece(x,y)
                     if not piece:
-                        self.x = x
-                        self.y = y
+                        board.pieces[x*8+y] = copy.copy(self)
+                        del board.pieces[self.x*8+self.y]
+                        board.pieces[x*8+y].x = x
+                        board.pieces[x*8+y].y = y
                         return 1
                     return 0
         return 0
@@ -34,14 +38,14 @@ class Pawn(Piece):
     def canMoveTo(self,x,y):
         if self.color == "black":
             if self.y != 1:
-                return y-self.y == 1 and (-2 < x-self.x < 2)
+                return y-self.y == 1 and (-2 < self.x-x < 2)
             else:
-                return (0 < y-self.y < 3) and x-self.x == 0
+                return (0 < y-self.y < 3)
         else:
             if self.y != 6:
-                return self.y-y == 1 and (-2 < x-self.x < 2)
+                return self.y-y == 1 and (-2 < self.x-x < 2)
             else:
-                return 0 < self.y-y < 3
+                return 0 < self.y-y < 3 
 
 
     def somethingInTheWay(self,x,y,board):

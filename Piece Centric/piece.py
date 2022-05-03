@@ -18,12 +18,15 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-                board.pieces.remove(piece)
-                self.x = x
-                self.y = y
+                board.pieces[x*8+y] = copy.copy(self)
+                del board.pieces[self.x*8+self.y]
+                board.pieces[x*8+y].x = x
+                board.pieces[x*8+y].y = y
             else:
-                self.x = x
-                self.y = y
+                board.pieces[x*8+y] = copy.copy(self)
+                del board.pieces[self.x*8+self.y]
+                board.pieces[x*8+y].x = x
+                board.pieces[x*8+y].y = y
                 
             return 1
         else:

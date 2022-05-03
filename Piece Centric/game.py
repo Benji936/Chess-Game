@@ -32,7 +32,7 @@ def isWhite(x,y):
     return (x%2 + y%2)%2 == 0
 
 def loadImages(board,scale):
-    for piece in board.pieces:
+    for piece in board.pieces.values():
         piece.loadImage(scale)
 
 def drawSquare(x,y,scale,w,b):
@@ -67,13 +67,13 @@ def  drawBoard():
 
 
 def display(screen,scale,pieces):
-    for piece in pieces:
+    for piece in pieces.values():
         screen.blit(piece.image,(piece.x*scale,piece.y*scale))
 
 def convertStringInBoard(board,string):
         x = 0
         y = 0
-        board.pieces = []
+        board.pieces = {}
         for char in string:
             try:
                 x += int(char)
@@ -84,15 +84,17 @@ def convertStringInBoard(board,string):
                 else:
                     pieces[char].x = x
                     pieces[char].y = y
-                    board.pieces.append(copy.copy(pieces[char]))
+                    board.pieces[x*8+y] = copy.copy(pieces[char])
                     x+=1
 
 
-def movePiece(piece,x,y):
+def movePiece(piece,x,y,board):
     drawSquare(piece.x,piece.y,cellScale,white,black)
     if(piece.move(x,y,game)):
         drawSquare(x,y,cellScale,white,black)
-    piece.display(screen,cellScale)
+        board.getPiece(x,y).display(screen,cellScale)
+    else:
+        piece.display(screen,cellScale)
 
 
 
@@ -123,7 +125,7 @@ if __name__ == "__main__":
                 pos2 = int(pos[1]/cellScale)
 
                 if pieceSelected:
-                    movePiece(select,pos1,pos2)
+                    movePiece(select,pos1,pos2,game)
                     pieceSelected = 0
                     select = None
                 else:
