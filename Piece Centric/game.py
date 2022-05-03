@@ -15,17 +15,13 @@ white = (255,249,201)
 selected_white = (255,215,162)
 black = (114,162,86)
 selected_black = (165,223,121)
-scale = 800
-size = scale, scale
-cellScale = int(scale/8)
+initScale = 800
+size = initScale, initScale
+cellScale = int(initScale/8)
 
 pieces = {"k" : King(0,0,"white"), "K" : King(0,0,"black"), "q" : Queen(0,0,"white"), "Q" : Queen(0,0,"black"), "b" : Bishop(0,0,"white"), 
 "B":Bishop(0,0,"black"), "r" : Rook(0,0,"white"), "R" : Rook(0,0,"black"), "n" : Knight(0,0,"white"), "N" : Knight(0,0,"black"), 
 "p" : Pawn(0,0,"white"), "P" : Pawn(0,0,"black")}
-
-
-pygame.init()
-screen = pygame.display.set_mode(size)
 
 
 def isWhite(x,y):
@@ -68,7 +64,8 @@ def  drawBoard():
 
 def display(screen,scale,pieces):
     for piece in pieces.values():
-        screen.blit(piece.image,(piece.x*scale,piece.y*scale))
+        piece.display(screen,scale)
+        #screen.blit(piece.image,(piece.x*scale,piece.y*scale))
 
 def convertStringInBoard(board,string):
         x = 0
@@ -96,18 +93,23 @@ def movePiece(piece,x,y,board):
     else:
         piece.display(screen,cellScale)
 
+def update(screen,scale,pieces):
+    drawBoard()
+    display(screen,scale,pieces)
+
 
 
 
 
 if __name__ == "__main__":
 
+    pygame.init()
+    screen = pygame.display.set_mode(size)
 
     game = Chessboard()
     convertStringInBoard(game,"RNBKQBNR/PPPPPPPP/////pppppppp/rnbkqbnr")
     loadImages(game,cellScale)
-    drawBoard()
-    display(screen,cellScale,game.pieces)
+    update(screen,cellScale,game.pieces)
 
     pieceSelected = 0
     select = game.getPiece(0,0)
@@ -125,7 +127,9 @@ if __name__ == "__main__":
                 pos2 = int(pos[1]/cellScale)
 
                 if pieceSelected:
-                    movePiece(select,pos1,pos2,game)
+                    #movePiece(select,pos1,pos2,game)
+                    select.move(pos1,pos2,game)
+                    update(screen,cellScale,game.pieces)
                     pieceSelected = 0
                     select = None
                 else:

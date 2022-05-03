@@ -7,6 +7,7 @@ class Piece:
         self.x = x
         self.y = y
         self.color = color
+        self.moved = 0
         self.image = None
     
     def move(self,x,y,board):
@@ -18,16 +19,8 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-                board.pieces[x*8+y] = copy.copy(self)
-                del board.pieces[self.x*8+self.y]
-                board.pieces[x*8+y].x = x
-                board.pieces[x*8+y].y = y
-            else:
-                board.pieces[x*8+y] = copy.copy(self)
-                del board.pieces[self.x*8+self.y]
-                board.pieces[x*8+y].x = x
-                board.pieces[x*8+y].y = y
-                
+            board.changePositionOf(self,x,y)
+            self.moved = 1     
             return 1
         else:
             return 0
