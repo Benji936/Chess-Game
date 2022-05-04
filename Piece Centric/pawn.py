@@ -4,6 +4,15 @@ from piece import Piece
 
 class Pawn(Piece):
 
+    def passThrough(self,board,x,y):
+        side = self.x-(self.x-x)
+        beside = board.getPiece(side,self.y)
+        if beside:
+            if beside.moved == 1 and 2 < beside.y < 5:
+                board.changePositionOf(self,x,y)
+                del board.pieces[side*8+self.y]
+                return 1
+        return 0
 
     def move(self,x,y,board):
         if self.canMoveTo(x,y):
@@ -12,11 +21,10 @@ class Pawn(Piece):
                 if piece:
                     if piece.color == self.color:
                         return 0
-                    board.changePositionOf(self,x,y)  
-                    self.moved = 1
+                    board.changePositionOf(self,x,y)
                     return 1
                 else:
-                    return 0
+                    return self.passThrough(board,x,y)
             else:
                 if self.somethingInTheWay(x,y,board):
                     return 0
