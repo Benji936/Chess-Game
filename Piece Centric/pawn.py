@@ -24,7 +24,6 @@ class Pawn(Piece):
                     piece = board.getPiece(x,y)
                     if not piece:
                         board.changePositionOf(self,x,y)  
-                        self.moved = 1
                         return 1
                     return 0
         return 0

@@ -12,6 +12,7 @@ class Chessboard:
         del self.pieces[piece.x*8+piece.y]
         self.pieces[x*8+y].x = x
         self.pieces[x*8+y].y = y
+        self.pieces[x*8+y].moved += 1
 
     def checkmate():
         pass

@@ -19,8 +19,7 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-            board.changePositionOf(self,x,y)
-            self.moved = 1     
+            board.changePositionOf(self,x,y)   
             return 1
         else:
             return 0
