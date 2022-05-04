@@ -18,10 +18,11 @@ selected_black = (165,223,121)
 initScale = 800
 size = initScale, initScale
 cellScale = int(initScale/8)
+colors = ["white","black"]
 
-pieces = {"k" : King(0,0,"white"), "K" : King(0,0,"black"), "q" : Queen(0,0,"white"), "Q" : Queen(0,0,"black"), "b" : Bishop(0,0,"white"), 
-"B":Bishop(0,0,"black"), "r" : Rook(0,0,"white"), "R" : Rook(0,0,"black"), "n" : Knight(0,0,"white"), "N" : Knight(0,0,"black"), 
-"p" : Pawn(0,0,"white"), "P" : Pawn(0,0,"black")}
+pieces = {"k" : King(0,0,colors[0]), "K" : King(0,0,colors[1]), "q" : Queen(0,0,colors[0]), "Q" : Queen(0,0,colors[1]), "b" : Bishop(0,0,colors[0]), 
+"B":Bishop(0,0,colors[1]), "r" : Rook(0,0,colors[0]), "R" : Rook(0,0,colors[1]), "n" : Knight(0,0,colors[0]), "N" : Knight(0,0,colors[1]), 
+"p" : Pawn(0,0,colors[0]), "P" : Pawn(0,0,colors[1])}
 
 
 def isWhite(x,y):
@@ -107,13 +108,13 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(size)
 
     game = Chessboard()
-    convertStringInBoard(game,"RNBKQBNR/PPPPPPPP/////pppppppp/rnbkqbnr")
+    convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")
     loadImages(game,cellScale)
     update(screen,cellScale,game.pieces)
 
     pieceSelected = 0
     select = game.getPiece(0,0)
-
+    turn = 0
 
     while 1:
 
@@ -128,16 +129,18 @@ if __name__ == "__main__":
 
                 if pieceSelected:
                     #movePiece(select,pos1,pos2,game)
-                    select.move(pos1,pos2,game)
+                    if(select.move(pos1,pos2,game)):
+                        turn += 1
                     update(screen,cellScale,game.pieces)
                     pieceSelected = 0
                     select = None
                 else:
                     select = game.getPiece(pos1,pos2)
                     if select:
-                        drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
-                        select.display(screen,cellScale)
-                        pieceSelected = 1
+                        if select.color == colors[turn%2]:
+                            drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
+                            select.display(screen,cellScale)
+                            pieceSelected = 1
 
 
 
