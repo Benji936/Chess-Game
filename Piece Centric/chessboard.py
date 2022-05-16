@@ -23,7 +23,20 @@ class Chessboard:
                 return 1
         return 0
 
+    def nexTurn(self,piece,x,y):
+        if(piece.move(x,y,self)):
+            self.turn += 1
+            return 1
+        return 0
+
+    def wichColorTurn(self):
+        return self.colors[self.turn%2]
+
     def __init__(self):
+        self.colors = ["white","black"]
+        self.turn = 0
+        self.whiteKing = None
+        self.blacKing = None
         self.pieces = {}
         self.moves = []
 

@@ -71,7 +71,6 @@ def display(screen,scale,pieces):
 def convertStringInBoard(board,string):
         x = 0
         y = 0
-        board.pieces = {}
         for char in string:
             try:
                 x += int(char)
@@ -114,7 +113,6 @@ if __name__ == "__main__":
 
     pieceSelected = 0
     select = game.getPiece(0,0)
-    turn = 0
 
     while 1:
 
@@ -124,20 +122,24 @@ if __name__ == "__main__":
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
+
+                #Scaling the position 
                 pos1 = int(pos[0]/cellScale)
                 pos2 = int(pos[1]/cellScale)
 
                 if pieceSelected:
-                    #movePiece(select,pos1,pos2,game)
-                    if(select.move(pos1,pos2,game)):
-                        turn += 1
+                    #Moves the piece and change turn
+                    game.nexTurn(select,pos1,pos2)
+
+                    #Graphic update and reset of selection for the next player
                     update(screen,cellScale,game.pieces)
                     pieceSelected = 0
                     select = None
                 else:
                     select = game.getPiece(pos1,pos2)
                     if select:
-                        if select.color == colors[turn%2]:
+                        if select.color == game.wichColorTurn():
+                            #Draw the square with a different color to see the selection
                             drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
                             select.display(screen,cellScale)
                             pieceSelected = 1
