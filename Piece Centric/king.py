@@ -11,8 +11,8 @@ class King(Piece):
     def move(self,x,y,board):
         #Check if the king moves normaly 
         if(not super().move(x,y,board)):
-            difX = (x-self.x)
-            difY = (y-self.y)
+            difX = x-self.x
+            difY = y-self.y
             #Then if the king wants to ROC
             if(abs(difX) == 2 and not difY):
 
@@ -28,9 +28,7 @@ class King(Piece):
                     return 1
             return 0
         return 1
-            
-
-
+        
 
     def somethingInTheWay(self,x,y,board):
         return 0

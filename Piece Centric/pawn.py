@@ -14,6 +14,9 @@ class Pawn(Piece):
                 return 1
         return 0
 
+    def promote(self):
+        pass
+
     def move(self,x,y,board):
         if self.canMoveTo(x,y):
             if self.x-x == 1 or self.x-x == -1:

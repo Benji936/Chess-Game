@@ -17,8 +17,11 @@ class Chessboard:
     def checkmate():
         pass
 
-    def check():
-        pass
+    def check(king,board):
+        for piece in board.pieces:
+            if(piece.canMoveTo(king.x,king.y) and not piece.somethingInTheWay(king.x,king.y,board)):
+                return 1
+        return 0
 
     def __init__(self):
         self.pieces = {}
