@@ -82,6 +82,8 @@ def convertStringInBoard(board,string):
                     pieces[char].x = x
                     pieces[char].y = y
                     board.pieces[x*8+y] = copy.copy(pieces[char])
+                    if type(pieces[char]) == type(King(0,0,"w")):
+                        board.kings.append(board.pieces[x*8+y])
                     x+=1
 
 

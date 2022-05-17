@@ -1,4 +1,5 @@
 import pygame
+from king import King
 import copy
 
 class Chessboard:
@@ -8,20 +9,22 @@ class Chessboard:
         return self.pieces.get(index,0)
 
     def changePositionOf(self,piece,x,y):
+        if self.check() and type(piece) != type(King(0,0,"white")):
+            return 0
+
         self.pieces[x*8+y] = copy.copy(piece)
         del self.pieces[piece.x*8+piece.y]
         self.pieces[x*8+y].x = x
         self.pieces[x*8+y].y = y
         self.pieces[x*8+y].moved += 1
+        return 1
 
-    def checkmate():
+    def checkmate(self):
         pass
 
-    def check(king,board):
-        for piece in board.pieces:
-            if(piece.canMoveTo(king.x,king.y) and not piece.somethingInTheWay(king.x,king.y,board)):
-                return 1
-        return 0
+    def check(self):
+        king = self.kings[(self.turn+1)%2]
+        return king.somethingInTheWay(king.x,king.y,self)
 
     def nexTurn(self,piece,x,y):
         if(piece.move(x,y,self)):
@@ -35,8 +38,7 @@ class Chessboard:
     def __init__(self):
         self.colors = ["white","black"]
         self.turn = 0
-        self.whiteKing = None
-        self.blacKing = None
+        self.kings = []
         self.pieces = {}
         self.moves = []
 

@@ -3,7 +3,7 @@ from piece import Piece
 
 class Bishop(Piece):
     def canMoveTo(self,x,y):
-        return (abs(self.x-x) - abs(self.y-y) == 0)
+        return not (abs(self.x-x) - abs(self.y-y))
 
     def somethingInTheWay(self,x,y,board):
         if(self.x == x and self.y == y): 
