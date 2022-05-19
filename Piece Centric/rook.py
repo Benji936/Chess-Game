@@ -2,7 +2,7 @@ import pygame
 from piece import Piece
 
 class Rook(Piece):
-    def canMoveTo(self,x,y):
+    def isInMovingPattern(self,x,y):
         return (self.y == y or self.x ==x)
 
 

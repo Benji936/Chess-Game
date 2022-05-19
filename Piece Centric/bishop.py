@@ -2,7 +2,7 @@ import pygame
 from piece import Piece
 
 class Bishop(Piece):
-    def canMoveTo(self,x,y):
+    def isInMovingPattern(self,x,y):
         return not (abs(self.x-x) - abs(self.y-y))
 
     def somethingInTheWay(self,x,y,board):

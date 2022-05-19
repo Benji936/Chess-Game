@@ -4,42 +4,42 @@ from piece import Piece
 
 class Pawn(Piece):
 
-    def passThrough(self,board,x,y):
+    def canPassThrough(self,board,x,y):
         side = self.x-(self.x-x)
         beside = board.getPiece(side,self.y)
         if beside:
             if beside.moved == 1 and 2 < beside.y < 5:
-                board.changePositionOf(self,x,y)
-                del board.pieces[side*8+self.y]
+                #board.changePositionOf(self,x,y)
+                #del board.pieces[side*8+self.y]
                 return 1
         return 0
 
     def promote(self):
         pass
 
-    def move(self,x,y,board):
-        if self.canMoveTo(x,y):
+    def canMoveTo(self,x,y,board):
+        if self.isInMovingPattern(x,y):
             if self.x-x == 1 or self.x-x == -1:
                 piece = board.getPiece(x,y)
                 if piece:
                     if piece.color == self.color:
                         return 0
-                    board.changePositionOf(self,x,y)
+                    #board.changePositionOf(self,x,y)
                     return 1
                 else:
-                    return self.passThrough(board,x,y)
+                    return self.canPassThrough(board,x,y)
             else:
                 if self.somethingInTheWay(x,y,board):
                     return 0
                 else:
                     piece = board.getPiece(x,y)
                     if not piece:
-                        board.changePositionOf(self,x,y)  
+                        #board.changePositionOf(self,x,y)  
                         return 1
                     return 0
         return 0
 
-    def canMoveTo(self,x,y):
+    def isInMovingPattern(self,x,y):
         if self.color == "black":
             if self.moved:
                 return y-self.y == 1 and (-2 < self.x-x < 2)

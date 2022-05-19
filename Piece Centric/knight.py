@@ -2,7 +2,7 @@ import pygame
 from piece import Piece
 
 class Knight(Piece):
-    def canMoveTo(self,x,y):
+    def isInMovingPattern(self,x,y):
         return abs(self.x-x) + abs(self.y-y) == 3
 
     def somethingInTheWay(self,x,y,board):
