@@ -1,5 +1,3 @@
-import pygame
-from king import King
 import copy
 
 class Chessboard:
@@ -21,8 +19,7 @@ class Chessboard:
 
 
     def pat(self):
-        king = self.kings[(self.turn+1)%2]
-        return self.checkmate() == 1 and king.somethingInTheWay(king.x,king.y,self)
+        return self.checkmate() == 1 
 
 
     def checkmate(self):
@@ -44,13 +41,19 @@ class Chessboard:
         if(piece.move(x,y,self)):
             self.turn += 1
             if self.checkmate() == 0 or self.pat():
-                return -1
+                return 0
             return 1
         return 0
 
 
     def wichColorTurn(self):
         return self.colors[self.turn%2]
+
+    def copyTo(self,other):
+        other.turn = copy.copy(self.turn)
+        other.kings = copy.copy(self.kings)
+        other.moves = copy.copy(self.moves)
+        other.pieces = copy.copy(self.pieces)
 
 
     def __init__(self):
@@ -63,3 +66,5 @@ class Chessboard:
         self.maxY = 8
 
     #reverse display: you need just to substract by the size of height for y and width for x and get their absolute value to reverse the positions
+
+    #Pour vérifier si il y echec et mat il faut vérifier tous les coups possible et si aucun ne permet d'empĉher l'echec et mat

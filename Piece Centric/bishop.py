@@ -1,6 +1,8 @@
 import pygame
 from piece import Piece
 
+directions = [(1,1),(-1,-1),(-1,1),(1,-1)]
+
 class Bishop(Piece):
     def isInMovingPattern(self,x,y):
         return not (abs(self.x-x) - abs(self.y-y))
@@ -17,7 +19,19 @@ class Bishop(Piece):
                 return 1
             i+=1
 
-        
+    def getPossibleMoves(self, board):
+        self.moves = []
+        for direction in directions:
+            count = 1
+            xDirection = self.x+count*direction[0]
+            yDirection = self.y+count*direction[1]
+            #Tant qu'on reste dans le plateau pendant le parcours
+            while xDirection < 8 and yDirection < 8 and xDirection >= 0 and yDirection >= 0:
+                if self.canMoveTo(xDirection,yDirection,board):
+                    self.moves.append((xDirection,yDirection))
+                count += 1
+                xDirection = self.x+count*direction[0]
+                yDirection = self.y+count*direction[1]
         
 
     def loadImage(self,scale):

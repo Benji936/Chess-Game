@@ -1,13 +1,14 @@
 import pygame
 from piece import Piece
 
+directions = [(0,1),(1,0),(-1,0),(0,-1)]
+
 class Rook(Piece):
     def isInMovingPattern(self,x,y):
         return (self.y == y or self.x ==x)
 
 
     def somethingInTheWay(self,x,y,board):
-
         if self.x > x:
             for i in range(x+1,self.x):
                 if board.getPiece(i,y):
@@ -26,6 +27,13 @@ class Rook(Piece):
                     return 1
         return 0
 
+    def getPossibleMoves(self,board):
+        self.moves = []
+        for i in range(0,8):
+            if self.canMoveTo(i,self.y,board):
+                self.moves.append((i,self.y))
+            if self.canMoveTo(self.x,i,board):
+                self.moves.append((self.x,i))
 
 
     def loadImage(self,scale):

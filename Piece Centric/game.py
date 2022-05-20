@@ -100,7 +100,12 @@ def update(screen,scale,pieces):
     display(screen,scale,pieces)
 
 
-
+def displayMoves(piece,scale,board):
+    piece.getPossibleMoves(board)
+    img = pygame.image.load(r'sprites/moves.png')
+    img = pygame.transform.scale(img, (scale,scale))
+    for move in piece.moves:
+        screen.blit(img,(move[0]*scale,move[1]*scale))
 
 
 if __name__ == "__main__":
@@ -135,6 +140,7 @@ if __name__ == "__main__":
                         exit()
 
                     #Graphic update and reset of selection for the next player
+                    loadImages(game,cellScale)
                     update(screen,cellScale,game.pieces)
                     pieceSelected = 0
                     select = None
@@ -145,6 +151,7 @@ if __name__ == "__main__":
                             #Draw the square with a different color to see the selection
                             drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
                             select.display(screen,cellScale)
+                            displayMoves(select,cellScale,game)
                             pieceSelected = 1
 
 
