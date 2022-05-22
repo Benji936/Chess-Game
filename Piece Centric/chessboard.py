@@ -17,10 +17,8 @@ class Chessboard:
         self.pieces[x*8+y].y = y
         self.pieces[x*8+y].moved += 1
 
-
     def pat(self):
         return self.checkmate() == 1 
-
 
     def checkmate(self):
         count = 0
@@ -51,9 +49,9 @@ class Chessboard:
 
     def copyTo(self,other):
         other.turn = copy.copy(self.turn)
-        other.kings = copy.copy(self.kings)
-        other.moves = copy.copy(self.moves)
-        other.pieces = copy.copy(self.pieces)
+        other.kings = copy.deepcopy(self.kings)
+        other.moves = copy.deepcopy(self.moves)
+        other.pieces = copy.deepcopy(self.pieces)
 
 
     def __init__(self):
