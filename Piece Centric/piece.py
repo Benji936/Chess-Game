@@ -9,7 +9,6 @@ class Piece:
         self.color = color
         self.moves = []
         self.moved = 0
-        self.image = None
     
     def canMoveTo(self,x,y,board):
         if self.isInMovingPattern(x,y):
@@ -40,7 +39,7 @@ class Piece:
         return 0
 
     def display(self,screen,scale):
-        screen.blit(self.image,(self.x*scale,self.y*scale))
+        screen.blit(self.loadImage(scale),(self.x*scale,self.y*scale))
 
 
     def canEat(self,x,y,board):

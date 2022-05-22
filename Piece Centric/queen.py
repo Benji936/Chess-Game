@@ -38,4 +38,4 @@ class Queen(Piece):
     def loadImage(self,scale):
         img = pygame.image.load(r'sprites/'+ self.color +'_queen.png')
         img = pygame.transform.scale(img, (scale,scale))
-        self.image = img
+        return img

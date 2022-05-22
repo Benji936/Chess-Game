@@ -28,10 +28,6 @@ pieces = {"k" : King(0,0,colors[0]), "K" : King(0,0,colors[1]), "q" : Queen(0,0,
 def isWhite(x,y):
     return (x%2 + y%2)%2 == 0
 
-def loadImages(board,scale):
-    for piece in board.pieces.values():
-        piece.loadImage(scale)
-
 def drawSquare(x,y,scale,w,b):
     cell = pygame.Rect(x*scale,y*scale,scale,scale)
     if(isWhite(x,y)):
@@ -48,8 +44,6 @@ def drawLine(x,y,color1,color2):
         else:
             pygame.draw.rect(screen,color1,cell)
         x+=cellScale
-
-
 
 def  drawBoard():
     yCount = 0
@@ -115,7 +109,6 @@ if __name__ == "__main__":
 
     game = Chessboard()
     convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")
-    loadImages(game,cellScale)
     update(screen,cellScale,game.pieces)
 
     pieceSelected = 0
@@ -140,7 +133,6 @@ if __name__ == "__main__":
                         exit()
 
                     #Graphic update and reset of selection for the next player
-                    loadImages(game,cellScale)
                     update(screen,cellScale,game.pieces)
                     pieceSelected = 0
                     select = None
