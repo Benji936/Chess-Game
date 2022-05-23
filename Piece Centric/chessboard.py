@@ -22,22 +22,15 @@ class Chessboard:
 
     def checkmate(self):
         res = True
+        print(self.turn)
         for piece in self.pieces.values():
             if piece.color == self.wichColorTurn():
-                for move in piece.moves:
-                    checkBoard = copy.deepcopy(self)
-                    piece.getPossibleMoves(checkBoard)
-                    piece.move(move[0],move[1],checkBoard)
-                    if checkBoard.check():
-                        del move
-                    else:
-                        res = False 
+                piece.getPossibleMoves(self)
+                if len(piece.moves):
+                    #print(piece.moves)
+                    res = False                       
         return res
                         
-
-
-
-
     def check(self):
         king = self.kings[(self.turn+1)%2]
         return king.somethingInTheWay(king.x,king.y,self)
@@ -48,6 +41,8 @@ class Chessboard:
             self.turn += 1
             if self.checkmate():
                 return -1
+            elif self.check():
+                print("check")
             return 1
         return 0
 

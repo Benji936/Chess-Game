@@ -27,6 +27,10 @@ class Pawn(Piece):
                     if piece.color == self.color:
                         return 0
                     #board.changePositionOf(self,x,y)
+                    checkBoard = copy.deepcopy(board)
+                    checkBoard.changePositionOf(self,x,y)
+                    if checkBoard.check():
+                        return 0
                     return 1
                 else:
                     return self.canPassThrough(board,x,y)
@@ -37,6 +41,10 @@ class Pawn(Piece):
                     piece = board.getPiece(x,y)
                     if not piece:
                         #board.changePositionOf(self,x,y)  
+                        checkBoard = copy.deepcopy(board)
+                        checkBoard.changePositionOf(self,x,y)
+                        if checkBoard.check():
+                            return 0
                         return 1
                     return 0
         return 0

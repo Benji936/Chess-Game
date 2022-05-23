@@ -19,7 +19,6 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-
             checkBoard = copy.deepcopy(board)
             checkBoard.changePositionOf(self,x,y)
             if checkBoard.check():
