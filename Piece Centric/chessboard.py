@@ -11,7 +11,7 @@ class Chessboard:
         
 
     def changePositionOf(self,piece,x,y):
-        self.pieces[x*8+y] = copy.copy(piece)
+        self.pieces[x*8+y] = copy.deepcopy(piece)
         del self.pieces[piece.x*8+piece.y]
         self.pieces[x*8+y].x = x
         self.pieces[x*8+y].y = y
@@ -21,13 +21,21 @@ class Chessboard:
         return self.checkmate() == 1 
 
     def checkmate(self):
-        count = 0
-        king = self.kings[(self.turn+1)%2]
-        for i in range(-1,2):
-            for j in range(-1,2):
-                count += king.canMoveTo(king.x+i,king.y+j,self)
-        check = not self.check()
-        return count + check
+        res = True
+        for piece in self.pieces.values():
+            if piece.color == self.colors[(self.turn+1)%2]:
+                for move in piece.moves:
+                    checkBoard = copy.deepcopy(self)
+                    piece.getPossibleMoves(checkBoard)
+                    piece.move(move[0],move[1],checkBoard)
+                    if checkBoard.check():
+                        del move
+                    else:
+                        res = False 
+        return res
+                        
+
+
 
 
     def check(self):
@@ -38,7 +46,7 @@ class Chessboard:
     def nexTurn(self,piece,x,y):
         if(piece.move(x,y,self)):
             self.turn += 1
-            if self.checkmate() == 0 or self.pat():
+            if self.checkmate():
                 return 0
             return 1
         return 0

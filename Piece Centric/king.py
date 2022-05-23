@@ -2,6 +2,7 @@ import pygame
 import copy
 from chessboard import Chessboard
 from rook import Rook
+from pawn import Pawn
 from piece import Piece
 
 directions = [(1,1),(-1,-1),(-1,1),(1,-1),(0,1),(1,0),(-1,0),(0,-1)]

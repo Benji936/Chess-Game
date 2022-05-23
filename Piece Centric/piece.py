@@ -19,14 +19,16 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
+
+            checkBoard = copy.deepcopy(board)
+            checkBoard.changePositionOf(self,x,y)
+            if checkBoard.check():
+                return 0
             return 1    
         else:
             return 0
 
     def move(self,x,y,board):
-        if board.check() and (self != board.kings[0]):
-            return 0
-
         canMove = self.canMoveTo(x,y,board)
         
         if canMove != 1 and canMove != 0:
