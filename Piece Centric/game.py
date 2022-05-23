@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
                 if pieceSelected:
                     #Moves the piece and change turn
-                    if game.nexTurn(select,pos1,pos2) == -1:
+                    if game.nexTurn(select,pos1,pos2) < 0:
                         exit()
 
                     #Graphic update and reset of selection for the next player

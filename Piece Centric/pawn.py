@@ -13,7 +13,7 @@ class Pawn(Piece):
             if beside.moved == 1 and 2 < beside.y < 5:
                 #board.changePositionOf(self,x,y)
                 #del board.pieces[side*8+self.y]
-                return 1
+                return (side,self.y)
         return 0
 
     def promote(self):
@@ -56,12 +56,12 @@ class Pawn(Piece):
             if self.moved:
                 return y-self.y == 1 and (-2 < self.x-x < 2)
             else:
-                return 0 < y-self.y < 3 and (self.x == x)
+                return 0 < y-self.y < 3 and (-2 < self.x-x < 2)
         else:
             if self.moved:
                 return self.y-y == 1 and (-2 < self.x-x < 2)
             else:
-                return 0 < self.y-y < 3 and (self.x == x)
+                return 0 < self.y-y < 3 and (-2 < self.x-x < 2)
 
 
     def somethingInTheWay(self,x,y,board):

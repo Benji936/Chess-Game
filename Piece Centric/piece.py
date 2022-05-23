@@ -19,7 +19,6 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-            
             checkBoard = copy.deepcopy(board)
             checkBoard.changePositionOf(self,x,y)
             if checkBoard.check():
@@ -32,8 +31,14 @@ class Piece:
         canMove = self.canMoveTo(x,y,board)
         
         if canMove != 1 and canMove != 0:
+            if len(canMove) > 2:
+                board.changePositionOf(self,x,y)
+                board.changePositionOf(canMove[0],canMove[1][0],canMove[1][1])
+                return 1
+
             board.changePositionOf(self,x,y)
-            board.changePositionOf(canMove[0],canMove[1][0],canMove[1][1])
+            del board.pieces[canMove[0]*8+canMove[1]]
+            
             return 1
         elif canMove:
             board.changePositionOf(self,x,y)

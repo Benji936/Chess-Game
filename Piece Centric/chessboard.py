@@ -45,6 +45,8 @@ class Chessboard:
         if(piece.move(x,y,self)):
             self.turn += 1
             if self.checkmate():
+                if self.check():
+                    return -2
                 return -1
             elif self.check():
                 print("check")

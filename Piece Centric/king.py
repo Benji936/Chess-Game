@@ -25,21 +25,16 @@ class King(Piece):
                 if not r.somethingInTheWay(rockPos,self.y,board) and not self.somethingInTheWay(rockPos,self.y,board):
 
                     r = board.getPiece(rockPos,self.y)
-                    return [r,(x + difX*(-1),y)]
+                    return [r,(x + difX*(-1),y),1]
             return 0
         return 1
         
 
     def somethingInTheWay(self,x,y,board):
-        for direction in directions:
-            count = 1
-            #Tant qu'on reste dans le plateau pendant le parcours
-            while x+count*direction[0] < 8 and y+count*direction[1] < 8 and x+count*direction[0] >= 0 and y+count*direction[1] >=0:
-                piece = board.getPiece(x+count*direction[0],y+count*direction[1])
-                if piece and piece.color != self.color:
-                    if piece.canMoveTo(x,y,board) and not piece.somethingInTheWay(x,y,board):
-                        return 1
-                count += 1
+        for piece in board.pieces.values():
+            if piece.color != self.color:
+                if piece.canMoveTo(x,y,board) and not piece.somethingInTheWay(x,y,board):
+                    return 1
         return 0
 
     def getPossibleMoves(self, board):
