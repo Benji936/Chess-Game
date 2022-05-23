@@ -34,6 +34,7 @@ class Rook(Piece):
                 self.moves.append((i,self.y))
             if self.canMoveTo(self.x,i,board):
                 self.moves.append((self.x,i))
+        return self.moves
 
 
     def loadImage(self,scale):

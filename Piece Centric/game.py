@@ -108,7 +108,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(size)
 
     game = Chessboard()
-    convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")
+    convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")  
     update(screen,cellScale,game.pieces)
 
     pieceSelected = 0
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                 else:
                     select = game.getPiece(pos1,pos2)
                     if select:
-                        if select.color == game.wichColorTurn():
+                        if select.color == game.turnColor():
                             #Draw the square with a different color to see the selection
                             drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
                             select.display(screen,cellScale)

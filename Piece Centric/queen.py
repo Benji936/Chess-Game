@@ -34,6 +34,7 @@ class Queen(Piece):
                 count += 1
                 xDirection = self.x+count*direction[0]
                 yDirection = self.y+count*direction[1]
+        return self.moves
 
     def loadImage(self,scale):
         img = pygame.image.load(r'sprites/'+ self.color +'_queen.png')

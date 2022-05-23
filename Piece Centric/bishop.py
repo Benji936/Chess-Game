@@ -32,6 +32,7 @@ class Bishop(Piece):
                 count += 1
                 xDirection = self.x+count*direction[0]
                 yDirection = self.y+count*direction[1]
+        return self.moves
         
 
     def loadImage(self,scale):

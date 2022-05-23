@@ -86,6 +86,7 @@ class Pawn(Piece):
             for i in range(4,8):
                 if self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board):
                     self.moves.append((self.x+directions[i][0],self.y+directions[i][1]))
+        return self.moves
     
     def loadImage(self,scale):
         img = pygame.image.load(r'sprites/'+ self.color +'_pawn.png')

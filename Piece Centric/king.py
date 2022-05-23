@@ -13,7 +13,7 @@ class King(Piece):
 
     
     def canMoveTo(self,x,y,board):
-        #Check if the king moves normaly 
+        #Check if the king can move normaly 
         if(not super().canMoveTo(x,y,board)):
             difX = x-self.x
             difY = y-self.y
@@ -55,6 +55,7 @@ class King(Piece):
                 count += 1
                 xDirection = self.x+count*direction[0]
                 yDirection = self.y+count*direction[1]
+        return self.moves
 
 
     def loadImage(self,scale):

@@ -15,6 +15,7 @@ class Knight(Piece):
         for direction in directions:
             if self.canMoveTo(self.x+direction[0],self.y+direction[1],board):
                 self.moves.append((self.x+direction[0],self.y+direction[1]))
+        return self.moves
             
 
 
