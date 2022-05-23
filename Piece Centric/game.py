@@ -95,7 +95,7 @@ def update(screen,scale,pieces):
 
 
 def displayMoves(piece,scale,board):
-    #piece.getPossibleMoves(board)
+    piece.getPossibleMoves(board)
     img = pygame.image.load(r'sprites/moves.png')
     img = pygame.transform.scale(img, (scale,scale))
     for move in piece.moves:
