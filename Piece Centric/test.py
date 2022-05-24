@@ -14,16 +14,34 @@ from game import convertStringInBoard
 
 class TestPieces(unittest.TestCase):
 
-    def test_king(self):
+    def test_checkmate_by_rooks(self):
         game = Chessboard()
-        game.turn = 7
-        convertStringInBoard(game,"R1BQKBNR/PPP11qPP/2NP/4P/2b1p//pppp1ppp/rnb1k1nr")
+        convertStringInBoard(game,"K/7r/6r/////k")
 
-        move = game.turnKing().canMoveTo(5,1,game) 
-        moves = game.turnKing().getPossibleMoves(game)     
+        move = game.getPiece(6,2).move(6,0,game)  
+        game.turn += 1 
+        check = game.check()
+        checkmate = game.checkmate()
 
-        self.assertEqual(len(moves), 0,"king can't move")
-        self.assertEqual(move, False,"king try to eat a defended piece")
+        self.assertEqual(move, True,"Rook moves")
+        self.assertEqual(check, True,"Check")
+        self.assertEqual(checkmate, True,"Checkmate")
+
+    def test_checkmate_by_defended_queen(self):
+        game = Chessboard()
+
+        convertStringInBoard(game,"2K/RPP/2q/7P/P2Ppb//pp2Bppp/r3r1k")
+        game.kings[0].moved += 1
+        game.kings[1].moved += 1
+
+        move = game.getPiece(2,2).move(2,1,game) 
+        game.turn += 1 
+        check = game.check()
+        checkmate = game.checkmate() 
+
+        self.assertEqual(move, True,"Rook moves")
+        self.assertEqual(check, True,"Check")
+        self.assertEqual(checkmate, True,"Checkmate")
 
 
     def test_queen(self):

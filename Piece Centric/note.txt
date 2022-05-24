@@ -1,3 +1,2 @@
 2 bugs:
 - roi echec par le cavalier sans être echec
-- pion ne peuvent pas manger lorsqu'ils sont sur la position de départ

@@ -108,6 +108,9 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(size)
 
     game = Chessboard()
+    #convertStringInBoard(game,"K/7r/6r/////k")
+    
+
     convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")  
     update(screen,cellScale,game.pieces)
 
