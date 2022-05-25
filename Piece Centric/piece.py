@@ -1,13 +1,14 @@
 from abc import abstractmethod
 import copy
 
+from moves import Move
+
 
 class Piece:
     def __init__(self, x, y,color):
         self.x = x
         self.y = y
         self.color = color
-        self.moves = []
         self.moved = 0
     
     def canMoveTo(self,x,y,board):
@@ -23,28 +24,17 @@ class Piece:
             checkBoard.changePositionOf(self,x,y)
             if checkBoard.check():
                 return 0
-            return 1    
+            return Move(self,(x,y))
         else:
             return 0
 
-    def move(self,x,y,board):
-        canMove = self.canMoveTo(x,y,board)
-        
-        if canMove != 1 and canMove != 0:
-            if len(canMove) > 2:
-                board.changePositionOf(self,x,y)
-                board.changePositionOf(canMove[0],canMove[1][0],canMove[1][1])
-                return 1
 
-            board.changePositionOf(self,x,y)
-            del board.pieces[canMove[0]*8+canMove[1]]
-            
-            return 1
-        elif canMove:
-            board.changePositionOf(self,x,y)
+    def move(self,x,y,board):
+        move = self.canMoveTo(x,y,board)
+        if move:
+            move.applyMove(board)
             return 1
         return 0
-
 
 
     def display(self,screen,scale):

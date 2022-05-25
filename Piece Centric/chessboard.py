@@ -1,9 +1,10 @@
 import copy
+from moves import Move
 columns = ["a","b","c","d","e","f","g","h"]
 
 class Chessboard:
 
-    def moveInStr(self,before,piece,length):
+    def registerMove(self,before,piece,length):
         if(len(self.pieces) != length):
             eated = self.eaten[-1]
             self.moves.append(str(before) + columns[before.y] + str(abs(before.y-8)) +"x" + str(eated) + columns[eated.x] + str(abs(eated.y-8))) 
@@ -19,10 +20,6 @@ class Chessboard:
         
 
     def changePositionOf(self,piece,x,y):
-        eated = self.getPiece(x,y)
-        if eated:
-            self.eaten.append(eated)
-
         self.pieces[x*8+y] = copy.deepcopy(piece)
 
         if type(piece) == type(self.turnKing()):
@@ -43,8 +40,8 @@ class Chessboard:
         #print(self.turn)
         for piece in self.pieces.values():
             if piece.color == self.turnColor():
-                piece.getPossibleMoves(self)
-                if len(piece.moves):
+                moves = piece.getPossibleMoves(self)
+                if len(moves):
                     #print(piece.moves)
                     res = False                       
         return res
@@ -55,13 +52,8 @@ class Chessboard:
 
 
     def nexTurn(self,piece,x,y):
-        length = len(self.pieces)
-        before = copy.copy(piece)
         if(piece.move(x,y,self)):
             self.turn += 1
-            newpos = self.getPiece(x,y)
-            self.moveInStr(before,newpos,length)
-            #print(self.moves)
 
             if self.checkmate():
                 if self.check():
@@ -96,7 +88,6 @@ class Chessboard:
         self.kings = []
         self.pieces = {}
         self.moves = []
-        self.eaten = []
         self.maxX = 8
         self.maxY = 8
 

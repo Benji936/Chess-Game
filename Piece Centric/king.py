@@ -4,6 +4,7 @@ from chessboard import Chessboard
 from rook import Rook
 from pawn import Pawn
 from piece import Piece
+from moves import Castle
 
 directions = [(1,1),(-1,-1),(-1,1),(1,-1),(0,1),(1,0),(-1,0),(0,-1)]
 
@@ -13,6 +14,7 @@ class King(Piece):
 
     
     def canMoveTo(self,x,y,board):
+
         #Check if the king can move normaly 
         if(not super().canMoveTo(x,y,board)):
             difX = x-self.x
@@ -25,7 +27,8 @@ class King(Piece):
                 if not r.somethingInTheWay(rockPos,self.y,board) and not self.somethingInTheWay(rockPos,self.y,board):
 
                     r = board.getPiece(rockPos,self.y)
-                    return [r,(x + difX*(-1),y),1]
+                    return Castle(self,(x,y),r,(x + difX*(-1),y))
+                    #return [r,(x + difX*(-1),y),1]
             return 0
         return 1
         

@@ -1,5 +1,6 @@
 import pygame
 import copy
+from moves import enPassant, Move
 from piece import Piece
 
 directions = [(1,1),(0,1),(-1,1),(0,2),(1,-1),(-1,-1),(0,-1),(0,-2)]
@@ -13,7 +14,7 @@ class Pawn(Piece):
             if beside.moved == 1 and 2 < beside.y < 5:
                 #board.changePositionOf(self,x,y)
                 #del board.pieces[side*8+self.y]
-                return (side,self.y)
+                return enPassant(self,(x,y),(side,self.y))
         return 0
 
     def promote(self):
@@ -21,17 +22,17 @@ class Pawn(Piece):
 
     def canMoveTo(self,x,y,board):
         if self.isInMovingPattern(x,y):
+            #Si le pion essaie d'aller en diagonale on vérifie s'il y'a une pièce a manger ou une prise en passant
             if self.x-x == 1 or self.x-x == -1:
                 piece = board.getPiece(x,y)
                 if piece:
                     if piece.color == self.color:
                         return 0
-                    #board.changePositionOf(self,x,y)
                     checkBoard = copy.deepcopy(board)
                     checkBoard.changePositionOf(self,x,y)
                     if checkBoard.check():
                         return 0
-                    return 1
+                    return Move(self,(x,y))
                 else:
                     return self.canPassThrough(board,x,y)
             else:
@@ -39,13 +40,12 @@ class Pawn(Piece):
                     return 0
                 else:
                     piece = board.getPiece(x,y)
-                    if not piece:
-                        #board.changePositionOf(self,x,y)  
+                    if not piece: 
                         checkBoard = copy.deepcopy(board)
                         checkBoard.changePositionOf(self,x,y)
                         if checkBoard.check():
                             return 0
-                        return 1
+                        return Move(self,(x,y))
                     return 0
         return 0
     
