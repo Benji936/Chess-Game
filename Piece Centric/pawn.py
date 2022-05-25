@@ -92,3 +92,6 @@ class Pawn(Piece):
         img = pygame.image.load(r'sprites/'+ self.color +'_pawn.png')
         img = pygame.transform.scale(img, (scale,scale))
         return img
+
+    def __str__(self):
+        return ""

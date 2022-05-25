@@ -23,3 +23,6 @@ class Knight(Piece):
         img = pygame.image.load(r'sprites/'+ self.color +'_knight.png')
         img = pygame.transform.scale(img, (scale,scale))
         return img
+
+    def __str__(self):
+        return "n" if self.color == "white" else "N"

@@ -1,6 +1,14 @@
 import copy
+columns = ["a","b","c","d","e","f","g","h"]
 
 class Chessboard:
+
+    def moveInStr(self,before,piece,length):
+        if(len(self.pieces) != length):
+            eated = self.eaten[-1]
+            self.moves.append(str(before) + columns[before.y] + str(abs(before.y-8)) +"x" + str(eated) + columns[eated.x] + str(abs(eated.y-8))) 
+        else:
+            self.moves.append(str(piece) + columns[piece.x] + str(abs(piece.y-8))) 
 
     def outOfBounds(self,x,y):
         return x>self.maxX or x<0 or y>self.maxY or y<0
@@ -11,10 +19,15 @@ class Chessboard:
         
 
     def changePositionOf(self,piece,x,y):
+        eated = self.getPiece(x,y)
+        if eated:
+            self.eaten.append(eated)
+
         self.pieces[x*8+y] = copy.deepcopy(piece)
 
         if type(piece) == type(self.turnKing()):
             self.kings[(self.turn+1)%2] = self.pieces[x*8+y]
+
         del self.pieces[piece.x*8+piece.y]
         self.pieces[x*8+y].x = x
         self.pieces[x*8+y].y = y
@@ -42,14 +55,24 @@ class Chessboard:
 
 
     def nexTurn(self,piece,x,y):
+        length = len(self.pieces)
+        before = copy.copy(piece)
         if(piece.move(x,y,self)):
             self.turn += 1
+            newpos = self.getPiece(x,y)
+            self.moveInStr(before,newpos,length)
+            #print(self.moves)
+
             if self.checkmate():
                 if self.check():
+                    print("checkmate")
                     return -2
+                print("pat")
                 return -1
+
             elif self.check():
                 print("check")
+
             return 1
         return 0
 
@@ -73,6 +96,7 @@ class Chessboard:
         self.kings = []
         self.pieces = {}
         self.moves = []
+        self.eaten = []
         self.maxX = 8
         self.maxY = 8
 

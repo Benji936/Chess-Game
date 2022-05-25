@@ -1,6 +1,6 @@
 from abc import abstractmethod
 import copy
-from yaml import load
+
 
 class Piece:
     def __init__(self, x, y,color):
@@ -45,6 +45,8 @@ class Piece:
             return 1
         return 0
 
+
+
     def display(self,screen,scale):
         screen.blit(self.loadImage(scale),(self.x*scale,self.y*scale))
 
@@ -55,6 +57,12 @@ class Piece:
         
     def __eq__(self, other):
         return type(self) == type(other)
+
+    def __str__(self):
+        colors = {"white":0,"black":1}
+        
+        return repr(self).split('<')[1].split('.')[colors[self.color]][0]
+
     
     @abstractmethod
     def somethingInTheWay(self,x,y,board):
