@@ -11,9 +11,9 @@ class Pawn(Piece):
         side = self.x-(self.x-x)
         beside = board.getPiece(side,self.y)
         if beside:
-            if beside.moved == 1 and 2 < beside.y < 5:
-                #board.changePositionOf(self,x,y)
-                #del board.pieces[side*8+self.y]
+            if len(board.moves):
+                lastTurnMovedPiece = board.getPiece(board.moves[-1].to[0],board.moves[-1].to[1])
+            if beside.moved == 1 and 2 < beside.y < 5 and beside == lastTurnMovedPiece:
                 return enPassant(self,(x,y),(side,self.y))
         return 0
 

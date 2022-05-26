@@ -54,7 +54,6 @@ class Chessboard:
     def nexTurn(self,piece,x,y):
         if(piece.move(x,y,self)):
             self.turn += 1
-
             if self.checkmate():
                 if self.check():
                     print("checkmate")

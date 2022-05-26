@@ -46,7 +46,7 @@ class Piece:
 
         
     def __eq__(self, other):
-        return type(self) == type(other)
+        return type(self) == type(other) and self.x == other.x and self.y == other.y
 
     def __str__(self):
         colors = {"white":0,"black":1}

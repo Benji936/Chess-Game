@@ -27,7 +27,7 @@ class King(Piece):
                 if not r.somethingInTheWay(rockPos,self.y,board) and not self.somethingInTheWay(rockPos,self.y,board):
 
                     r = board.getPiece(rockPos,self.y)
-                    if not r.moved:
+                    if r.moved:
                         return 0
                     return Castle(self,(x,y),r,(x + difX*(-1),y))
             return 0
