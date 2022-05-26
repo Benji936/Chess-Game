@@ -22,19 +22,20 @@ class Queen(Piece):
             return 0
 
     def getPossibleMoves(self, board):
-        self.moves = []
+        moves = []
         for direction in directions:
             count = 1
             xDirection = self.x+count*direction[0]
             yDirection = self.y+count*direction[1]
             #Tant qu'on reste dans le plateau pendant le parcours
             while xDirection < 8 and yDirection < 8 and xDirection >= 0 and yDirection >= 0:
-                if self.canMoveTo(xDirection,yDirection,board):
-                    self.moves.append((xDirection,yDirection))
+                move = self.canMoveTo(xDirection,yDirection,board)
+                if move:
+                    moves.append(move)
                 count += 1
                 xDirection = self.x+count*direction[0]
                 yDirection = self.y+count*direction[1]
-        return self.moves
+        return moves
 
     def loadImage(self,scale):
         img = pygame.image.load(r'sprites/'+ self.color +'_queen.png')

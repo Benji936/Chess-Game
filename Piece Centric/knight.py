@@ -11,11 +11,12 @@ class Knight(Piece):
         return 0
 
     def getPossibleMoves(self, board):
-        self.moves = []
+        moves = []
         for direction in directions:
-            if self.canMoveTo(self.x+direction[0],self.y+direction[1],board):
-                self.moves.append((self.x+direction[0],self.y+direction[1]))
-        return self.moves
+            move = self.canMoveTo(self.x+direction[0],self.y+direction[1],board)
+            if move:
+                moves.append(move)
+        return moves
             
 
 

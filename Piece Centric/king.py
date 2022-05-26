@@ -4,7 +4,7 @@ from chessboard import Chessboard
 from rook import Rook
 from pawn import Pawn
 from piece import Piece
-from moves import Castle
+from moves import Castle, Move
 
 directions = [(1,1),(-1,-1),(-1,1),(1,-1),(0,1),(1,0),(-1,0),(0,-1)]
 
@@ -27,10 +27,11 @@ class King(Piece):
                 if not r.somethingInTheWay(rockPos,self.y,board) and not self.somethingInTheWay(rockPos,self.y,board):
 
                     r = board.getPiece(rockPos,self.y)
+                    if not r.moved:
+                        return 0
                     return Castle(self,(x,y),r,(x + difX*(-1),y))
-                    #return [r,(x + difX*(-1),y),1]
             return 0
-        return 1
+        return Move(self,(x,y))
         
 
     def somethingInTheWay(self,x,y,board):
@@ -41,19 +42,20 @@ class King(Piece):
         return 0
 
     def getPossibleMoves(self, board):
-        self.moves = []
+        moves = []
         for direction in directions:
             count = 1
             xDirection = self.x+count*direction[0]
             yDirection = self.y+count*direction[1]
             #Tant qu'on reste dans le plateau pendant le parcours
             while xDirection < 8 and yDirection < 8 and xDirection >= 0 and yDirection >= 0:
-                if self.canMoveTo(xDirection,yDirection,board):
-                    self.moves.append((xDirection,yDirection))
+                move = self.canMoveTo(xDirection,yDirection,board)
+                if move:
+                    moves.append(move)
                 count += 1
                 xDirection = self.x+count*direction[0]
                 yDirection = self.y+count*direction[1]
-        return self.moves
+        return moves
 
 
     def loadImage(self,scale):

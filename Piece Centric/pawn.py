@@ -77,16 +77,18 @@ class Pawn(Piece):
 
 
     def getPossibleMoves(self, board):
-        self.moves = []
+        moves = []
         if(self.color == "black"):
             for i in range(0,4):
-                if self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board):
-                    self.moves.append((self.x+directions[i][0],self.y+directions[i][1]))
+                move = self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board)
+                if move:
+                    moves.append(move)
         else:
             for i in range(4,8):
-                if self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board):
-                    self.moves.append((self.x+directions[i][0],self.y+directions[i][1]))
-        return self.moves
+                move = self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board)
+                if move:
+                    moves.append(move)
+        return moves
     
     def loadImage(self,scale):
         img = pygame.image.load(r'sprites/'+ self.color +'_pawn.png')

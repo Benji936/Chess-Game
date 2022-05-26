@@ -28,13 +28,15 @@ class Rook(Piece):
         return 0
 
     def getPossibleMoves(self,board):
-        self.moves = []
+        moves = []
         for i in range(0,8):
-            if self.canMoveTo(i,self.y,board):
-                self.moves.append((i,self.y))
-            if self.canMoveTo(self.x,i,board):
-                self.moves.append((self.x,i))
-        return self.moves
+            move = self.canMoveTo(i,self.y,board)
+            if move:
+                moves.append(move)
+            move = self.canMoveTo(self.x,i,board)
+            if move:
+                moves.append(move)
+        return moves
 
 
     def loadImage(self,scale):

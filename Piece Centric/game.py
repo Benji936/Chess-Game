@@ -98,8 +98,8 @@ def displayMoves(piece,scale,board):
     piece.getPossibleMoves(board)
     img = pygame.image.load(r'sprites/moves.png')
     img = pygame.transform.scale(img, (scale,scale))
-    for move in piece.moves:
-        screen.blit(img,(move[0]*scale,move[1]*scale))
+    for move in piece.getPossibleMoves(board):
+        screen.blit(img,(move.to[0]*scale,move.to[1]*scale))
 
 
 if __name__ == "__main__":
