@@ -3,13 +3,19 @@ import copy
 
 from moves import Move
 
-
 class Piece:
     def __init__(self, x, y,color):
         self.x = x
         self.y = y
         self.color = color
         self.moved = 0
+
+    def tryMove(self,board,x,y):
+        boardCopy = copy.deepcopy(board)
+        boardCopy.changePositionOf(self,x,y)
+        if boardCopy.check():
+            return 0
+        return Move(self,(x,y))
     
     def canMoveTo(self,x,y,board):
         if self.isInMovingPattern(x,y):
@@ -20,11 +26,9 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-            checkBoard = copy.deepcopy(board)
-            checkBoard.changePositionOf(self,x,y)
-            if checkBoard.check():
-                return 0
-            return Move(self,(x,y))
+            
+            return self.tryMove(board,x,y)
+            
         else:
             return 0
 

@@ -106,6 +106,8 @@ if __name__ == "__main__":
 
     pygame.init()
     screen = pygame.display.set_mode(size)
+    surface = pieces["n"].loadImage(cellScale)
+    pygame.display.set_icon(surface)
 
     game = Chessboard()
     #convertStringInBoard(game,"K/7r/6r/////k")

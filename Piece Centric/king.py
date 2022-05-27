@@ -14,24 +14,28 @@ class King(Piece):
 
     
     def canMoveTo(self,x,y,board):
-
+        move = super().canMoveTo(x,y,board)
         #Check if the king can move normaly 
-        if(not super().canMoveTo(x,y,board)):
+        if(not move):
             difX = x-self.x
             difY = y-self.y
             #Then if the king wants to ROC
             if(abs(difX) == 2 and difY == 0 and not self.moved):
+                #Scale the dif to -1 or 1 wether it's left or right
                 difX = int(difX/abs(difX))
                 r = Rook(self.x,self.y,"white")
-                rockPos = int((difX+1)*3.5)
-                if not r.somethingInTheWay(rockPos,self.y,board) and not self.somethingInTheWay(rockPos,self.y,board):
+                #if difX = -1 -> (-1 + 1)*3.5 = 0 so we get the position x of the left rook | if difX = 1 -> (1+1)*3.5 = 7 we get the position x of the right rook
+                rookPos = int((difX+1)*3.5)
+                if not r.somethingInTheWay(rookPos,self.y,board) and self.tryMove(board,self.x+difX,self.y) and self.tryMove(board,self.x+(difX*2),self.y):
 
-                    r = board.getPiece(rockPos,self.y)
+                    r = board.getPiece(rookPos,self.y)
+                    if not r:
+                        return 0
                     if r.moved:
                         return 0
                     return Castle(self,(x,y),r,(x + difX*(-1),y))
             return 0
-        return Move(self,(x,y))
+        return move
         
 
     def somethingInTheWay(self,x,y,board):

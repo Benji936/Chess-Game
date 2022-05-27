@@ -42,7 +42,7 @@ class Chessboard:
             if piece.color == self.turnColor():
                 moves = piece.getPossibleMoves(self)
                 if len(moves):
-                    #print(piece.moves)
+                    #print(piece.moves[-1])
                     res = False                       
         return res
                         
@@ -54,6 +54,7 @@ class Chessboard:
     def nexTurn(self,piece,x,y):
         if(piece.move(x,y,self)):
             self.turn += 1
+            print(self.moves[-1])
             if self.checkmate():
                 if self.check():
                     print("checkmate")

@@ -2,6 +2,7 @@ import pygame
 from piece import Piece
 
 directions = [(1,2),(2,1),(-1,2),(2,-1),(-2,1),(1,-2),(-1,-2),(-2,-1)]
+columns = ["a","b","c","d","e","f","g","h"]
 
 class Knight(Piece):
     def isInMovingPattern(self,x,y):
@@ -26,4 +27,4 @@ class Knight(Piece):
         return img
 
     def __str__(self):
-        return "n" if self.color == "white" else "N"
+        return "n" + str(columns[self.y]) + str(abs(self.x-8)) if self.color == "white" else "N"

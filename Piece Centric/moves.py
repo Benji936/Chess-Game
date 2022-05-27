@@ -1,3 +1,5 @@
+columns = ["a","b","c","d","e","f","g","h"]
+
 class Move:
     def __init__(self,piece,pos2):
         self.piece = piece
@@ -11,6 +13,12 @@ class Move:
         self.eatenPiece = board.getPiece(self.to[0],self.to[1])
         board.changePositionOf(self.piece,self.to[0],self.to[1])
         board.moves.append(self)
+
+    def __str__(self):
+        if self.eatenPiece:
+            return str(self.piece) + columns[self.piece.x] + str(abs(self.piece.y-8)) + "x" + str(self.eatenPiece) + columns[self.eatenPiece.x] + str(abs(self.eatenPiece.y-8))
+        else:
+            return str(self.piece) + columns[self.to[0]] + str(abs(self.to[1]-8)) 
 
 
 class enPassant(Move):
@@ -26,6 +34,9 @@ class enPassant(Move):
         del board.pieces[self.eatPos[0]*8+self.eatPos[1]]
         board.moves.append(self)
 
+    def __str__(self):
+        return str(self.piece) + columns[self.piece.x] + str(abs(self.piece.y-8)) + "x" + str(self.eatenPiece) + columns[self.eatenPiece.x] + str(abs(self.eatenPiece.y-8)) + " e.p"
+
 
 class Castle(Move):
     def __init__(self,piece,pos1,rook,pos2):
@@ -38,6 +49,12 @@ class Castle(Move):
         board.changePositionOf(self.piece,self.to[0],self.to[1])
         board.changePositionOf(self.rook,self.rookMove[0],self.rookMove[1])
         board.moves.append(self)
+
+    def __str__(self):
+        if self.to[0] < 4:
+            return "O-O-O"
+        else:
+            return "O-O"
 
 class Promote(Move):
     pass
