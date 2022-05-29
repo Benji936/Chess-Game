@@ -1,9 +1,9 @@
 columns = ["a","b","c","d","e","f","g","h"]
 
 class Move:
-    def __init__(self,piece,pos2):
+    def __init__(self,piece,pos):
         self.piece = piece
-        self.to = pos2
+        self.to = pos
         self.eatenPiece = None 
 
     def eats(self,board):
@@ -57,4 +57,16 @@ class Castle(Move):
             return "O-O"
 
 class Promote(Move):
-    pass
+    def __init__(self,piece,promote,pos):
+        self.piece = piece
+        self.promotion = promote
+        self.to = pos
+        self.eatenPiece = None 
+
+    def applyMove(self,board):
+        self.eatenPiece = board.getPiece(self.to[0],self.to[1])
+        board.changePositionOf(self.promotion,self.to[0],self.to[1])
+        board.moves.append(self)
+
+    def __str__(self):
+        return super().__str__() + " = " + str(self.promotion)

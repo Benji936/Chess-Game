@@ -1,15 +1,7 @@
 import copy
-from moves import Move
 columns = ["a","b","c","d","e","f","g","h"]
 
 class Chessboard:
-
-    def registerMove(self,before,piece,length):
-        if(len(self.pieces) != length):
-            eated = self.eaten[-1]
-            self.moves.append(str(before) + columns[before.y] + str(abs(before.y-8)) +"x" + str(eated) + columns[eated.x] + str(abs(eated.y-8))) 
-        else:
-            self.moves.append(str(piece) + columns[piece.x] + str(abs(piece.y-8))) 
 
     def outOfBounds(self,x,y):
         return x>self.maxX or x<0 or y>self.maxY or y<0
@@ -51,8 +43,8 @@ class Chessboard:
         return king.somethingInTheWay(king.x,king.y,self)
 
 
-    def nexTurn(self,piece,x,y):
-        if(piece.move(x,y,self)):
+    def nexTurn(self,piece,x,y,promotion=0):
+        if(piece.move(x,y,self,promotion)):
             self.turn += 1
             print(self.moves[-1])
             if self.checkmate():

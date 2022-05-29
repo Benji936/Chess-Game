@@ -12,7 +12,7 @@ from game import convertStringInBoard
 
 
 
-class TestPieces(unittest.TestCase):
+class TestMate(unittest.TestCase):
 
     def test_checkmate_by_rooks(self):
         game = Chessboard()
@@ -39,13 +39,13 @@ class TestPieces(unittest.TestCase):
         check = game.check()
         checkmate = game.checkmate() 
 
-        self.assertEqual(move, True,"Rook moves")
+        self.assertEqual(move, True,"Queen moves")
         self.assertEqual(check, True,"Check")
         self.assertEqual(checkmate, True,"Checkmate")
 
+    
 
-    def test_queen(self):
-        self.assertEqual(2, 2, "Tesseract")
+
 
 if __name__ == '__main__':
     unittest.main()

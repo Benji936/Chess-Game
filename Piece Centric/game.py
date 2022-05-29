@@ -133,10 +133,19 @@ if __name__ == "__main__":
                 pos2 = int(pos[1]/cellScale)
 
                 if pieceSelected:
-                    #Moves the piece and change turn
-                    if game.nexTurn(select,pos1,pos2) < 0:
-                        
-                        exit()
+                    try:
+                        promotions = select.canPromote(pos1,pos2)
+                        if promotions:
+                            index = int(input("Wich promotions do you want ? "))
+
+                        #Moves the piece and change turn
+                        if game.nexTurn(select,pos1,pos2,promotions[index]) < 0:
+                            exit()
+                    except Exception as e:
+                        #print(e)
+                        #Moves the piece and change turn
+                        if game.nexTurn(select,pos1,pos2) < 0:
+                            exit()
 
                     #Graphic update and reset of selection for the next player
                     update(screen,cellScale,game.pieces)

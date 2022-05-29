@@ -1,7 +1,11 @@
 import pygame
 import copy
-from moves import enPassant, Move
+from bishop import Bishop
+from knight import Knight
+from moves import Promote, enPassant, Move
 from piece import Piece
+from queen import Queen
+from rook import Rook
 
 directions = [(1,1),(0,1),(-1,1),(0,2),(1,-1),(-1,-1),(0,-1),(0,-2)]
 
@@ -14,11 +18,13 @@ class Pawn(Piece):
             if len(board.moves):
                 lastTurnMovedPiece = board.getPiece(board.moves[-1].to[0],board.moves[-1].to[1])
             if beside.moved == 1 and 2 < beside.y < 5 and beside == lastTurnMovedPiece:
-                return enPassant(self,(x,y),(side,self.y))
+                return self.tryMove(board,enPassant(self,(x,y),(side,self.y)))
         return 0
 
-    def promote(self):
-        pass
+    def canPromote(self,x,y):
+        if y == 7 or y == 0:
+            return [Promote(self,Queen(self.x,self.y,self.color),(x,y)),Promote(self,Bishop(self.x,self.y,self.color),(x,y)),Promote(self,Rook(self.x,self.y,self.color),(x,y)),Promote(self,Knight(self.x,self.y,self.color),(x,y))]
+        return 0
 
     def canMoveTo(self,x,y,board):
         if self.isInMovingPattern(x,y):
@@ -28,11 +34,7 @@ class Pawn(Piece):
                 if piece:
                     if piece.color == self.color:
                         return 0
-                    checkBoard = copy.deepcopy(board)
-                    checkBoard.changePositionOf(self,x,y)
-                    if checkBoard.check():
-                        return 0
-                    return Move(self,(x,y))
+                    return self.tryMove(board,Move(self,(x,y)))
                 else:
                     return self.canPassThrough(board,x,y)
             else:
@@ -41,14 +43,9 @@ class Pawn(Piece):
                 else:
                     piece = board.getPiece(x,y)
                     if not piece: 
-                        checkBoard = copy.deepcopy(board)
-                        checkBoard.changePositionOf(self,x,y)
-                        if checkBoard.check():
-                            return 0
-                        return Move(self,(x,y))
+                        return self.tryMove(board,Move(self,(x,y)))
                     return 0
         return 0
-    
     
 
     def isInMovingPattern(self,x,y):
@@ -80,14 +77,28 @@ class Pawn(Piece):
         moves = []
         if(self.color == "black"):
             for i in range(0,4):
-                move = self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board)
+                dirX = self.x+directions[i][0]
+                dirY = self.y+directions[i][1]
+                move = self.canMoveTo(dirX,dirY,board)
                 if move:
-                    moves.append(move)
+                    promotions = self.canPromote(dirX,dirY)
+                    if promotions:
+                        for promotion in promotions:
+                            moves.append(promotion)
+                    else:
+                        moves.append(move)
         else:
             for i in range(4,8):
-                move = self.canMoveTo(self.x+directions[i][0],self.y+directions[i][1],board)
+                dirX = self.x+directions[i][0]
+                dirY = self.y+directions[i][1]
+                move = self.canMoveTo(dirX,dirY,board)
                 if move:
-                    moves.append(move)
+                    promotions = self.canPromote(dirX,dirY)
+                    if promotions:
+                        for promotion in promotions:
+                            moves.append(promotion)
+                    else:
+                        moves.append(move)
         return moves
     
     def loadImage(self,scale):

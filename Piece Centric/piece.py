@@ -10,12 +10,12 @@ class Piece:
         self.color = color
         self.moved = 0
 
-    def tryMove(self,board,x,y):
+    def tryMove(self,board,move):
         boardCopy = copy.deepcopy(board)
-        boardCopy.changePositionOf(self,x,y)
+        boardCopy.changePositionOf(self,move.to[0],move.to[1])
         if boardCopy.check():
             return 0
-        return Move(self,(x,y))
+        return move
     
     def canMoveTo(self,x,y,board):
         if self.isInMovingPattern(x,y):
@@ -26,17 +26,19 @@ class Piece:
             if piece:
                 if piece.color == self.color:
                     return 0
-            
-            return self.tryMove(board,x,y)
-            
+
+            return self.tryMove(board,Move(self,(x,y)))
         else:
             return 0
 
 
-    def move(self,x,y,board):
+    def move(self,x,y,board,promotion=0):
         move = self.canMoveTo(x,y,board)
         if move:
-            move.applyMove(board)
+            if promotion:
+                promotion.applyMove(board)
+            else:
+                move.applyMove(board)
             return 1
         return 0
 
