@@ -1,113 +1,18 @@
-from king import King
-from queen import Queen
-from bishop import Bishop
-from rook import Rook
-from knight import Knight
-from pawn import Pawn
-from piece import Piece
+from pprint import pprint
 from chessboard import Chessboard
-
-import copy
-import sys, pygame
-from pygame.locals import *
-
-white = (255,249,201)
-selected_white = (255,215,162)
-black = (114,162,86)
-selected_black = (165,223,121)
-initScale = 800
-size = initScale, initScale
-cellScale = int(initScale/8)
-colors = ["white","black"]
-
-pieces = {"k" : King(0,0,colors[0]), "K" : King(0,0,colors[1]), "q" : Queen(0,0,colors[0]), "Q" : Queen(0,0,colors[1]), "b" : Bishop(0,0,colors[0]), 
-"B":Bishop(0,0,colors[1]), "r" : Rook(0,0,colors[0]), "R" : Rook(0,0,colors[1]), "n" : Knight(0,0,colors[0]), "N" : Knight(0,0,colors[1]), 
-"p" : Pawn(0,0,colors[0]), "P" : Pawn(0,0,colors[1])}
+from IA import ia
+from utils import *
+import sys
 
 
-def isWhite(x,y):
-    return (x%2 + y%2)%2 == 0
-
-def drawSquare(x,y,scale,w,b):
-    cell = pygame.Rect(x*scale,y*scale,scale,scale)
-    if(isWhite(x,y)):
-        pygame.draw.rect(screen,w,cell)
-    else:
-        pygame.draw.rect(screen,b,cell)
-
-
-def drawLine(x,y,color1,color2):
-    for i in range(8):
-        cell = pygame.Rect(x,y,cellScale,cellScale)
-        if(i%2):
-            pygame.draw.rect(screen,color2,cell)
-        else:
-            pygame.draw.rect(screen,color1,cell)
-        x+=cellScale
-
-def  drawBoard():
-    yCount = 0
-    xCount = 0
-    for i in range(8):
-        if(i%2):
-            drawLine(xCount,yCount,black,white)
-            yCount += cellScale
-        else:
-            drawLine(xCount,yCount,white,black)
-            yCount += cellScale
-
-
-def display(screen,scale,pieces):
-    for piece in pieces.values():
-        piece.display(screen,scale)
-        #screen.blit(piece.image,(piece.x*scale,piece.y*scale))
-
-def convertStringInBoard(board,string):
-        x = 0
-        y = 0
-        for char in string:
-            try:
-                x += int(char)
-            except:
-                if char == "/":
-                    y += 1
-                    x = 0
-                else:
-                    pieces[char].x = x
-                    pieces[char].y = y
-                    board.pieces[x*8+y] = copy.copy(pieces[char])
-                    if type(pieces[char]) == type(King(0,0,"w")):
-                        board.kings.append(board.pieces[x*8+y])
-                    x+=1
-
-
-def movePiece(piece,x,y,board):
-    drawSquare(piece.x,piece.y,cellScale,white,black)
-    if(piece.move(x,y,game)):
-        drawSquare(x,y,cellScale,white,black)
-        board.getPiece(x,y).display(screen,cellScale)
-    else:
-        piece.display(screen,cellScale)
-
-def update(screen,scale,pieces):
-    drawBoard()
-    display(screen,scale,pieces)
-
-
-def displayMoves(piece,scale,board):
-    piece.getPossibleMoves(board)
-    img = pygame.image.load(r'sprites/moves.png')
-    img = pygame.transform.scale(img, (scale,scale))
-    for move in piece.getPossibleMoves(board):
-        screen.blit(img,(move.to[0]*scale,move.to[1]*scale))
 
 
 if __name__ == "__main__":
 
     pygame.init()
     screen = pygame.display.set_mode(size)
-    surface = pieces["n"].loadImage(cellScale)
-    pygame.display.set_icon(surface)
+    icon = pieces["n"].loadImage(cellScale)
+    pygame.display.set_icon(icon)
 
     game = Chessboard()
     #convertStringInBoard(game,"K/7r/6r/////k")
@@ -125,7 +30,8 @@ if __name__ == "__main__":
 
             if event.type == pygame.QUIT: sys.exit()
 
-            elif event.type == pygame.MOUSEBUTTONUP:
+            if event.type == pygame.MOUSEBUTTONUP and game.turnColor() == "white":
+                
                 pos = pygame.mouse.get_pos()
 
                 #Scaling the position 
@@ -135,7 +41,7 @@ if __name__ == "__main__":
                 if pieceSelected:
                     try:
                         promotions = select.canPromote(pos1,pos2)
-                        if promotions:
+                        if promotions and select.canMoveTo(pos1,pos2,game):
                             index = int(input("Wich promotions do you want ? "))
 
                         #Moves the piece and change turn
@@ -156,10 +62,21 @@ if __name__ == "__main__":
                     if select:
                         if select.color == game.turnColor():
                             #Draw the square with a different color to see the selection
-                            drawSquare(pos1,pos2,cellScale,selected_white,selected_black)
+                            drawSquare(pos1,pos2,cellScale,selected_white,selected_black,screen)
                             select.display(screen,cellScale)
-                            displayMoves(select,cellScale,game)
+                            displayMoves(select,cellScale,game,screen)
                             pieceSelected = 1
+
+            elif game.turnColor() == "black":
+                move = ia(game,0,1,0)[1]
+                print(move)
+                if move:
+                    move.applyMove(game)
+                    game.turn += 1
+                    if game.checkEverything() < 0:
+                        exit()
+                    update(screen,cellScale,game.pieces)
+                
 
 
 

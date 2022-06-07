@@ -27,4 +27,4 @@ class Knight(Piece):
         return img
 
     def __str__(self):
-        return "n" + str(columns[self.y]) + str(abs(self.x-8)) if self.color == "white" else "N"
+        return "n" if self.color == "white" else "N"

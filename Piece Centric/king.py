@@ -26,7 +26,7 @@ class King(Piece):
                 r = Rook(self.x,self.y,"white")
                 #if difX = -1 -> (-1 + 1)*3.5 = 0 so we get the position x of the left rook | if difX = 1 -> (1+1)*3.5 = 7 we get the position x of the right rook
                 rookPos = int((difX+1)*3.5)
-                if not r.somethingInTheWay(rookPos,self.y,board) and self.tryMove(board,self.x+difX,self.y) and self.tryMove(board,self.x+(difX*2),self.y):
+                if not r.somethingInTheWay(rookPos,self.y,board) and self.tryMove(board,Move(self,(self.x+difX,self.y))) and self.tryMove(board,Move(self,(self.x+(difX*2),self.y))):
 
                     r = board.getPiece(rookPos,self.y)
                     if not r:

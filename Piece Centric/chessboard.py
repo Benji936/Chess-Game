@@ -4,7 +4,7 @@ columns = ["a","b","c","d","e","f","g","h"]
 class Chessboard:
 
     def outOfBounds(self,x,y):
-        return x>self.maxX or x<0 or y>self.maxY or y<0
+        return x>self.maxX-1 or x<0 or y>self.maxY-1 or y<0
         
     def getPiece(self,x,y):
         index = x*8 + y
@@ -42,22 +42,23 @@ class Chessboard:
         king = self.turnKing()
         return king.somethingInTheWay(king.x,king.y,self)
 
+    def checkEverything(self):
+        if self.checkmate():
+            if self.check():
+                print("checkmate")
+                return -2
+            print("pat")
+            return -1
+        elif self.check():
+            print("check")
+
+        return 1
 
     def nexTurn(self,piece,x,y,promotion=0):
         if(piece.move(x,y,self,promotion)):
             self.turn += 1
             print(self.moves[-1])
-            if self.checkmate():
-                if self.check():
-                    print("checkmate")
-                    return -2
-                print("pat")
-                return -1
-
-            elif self.check():
-                print("check")
-
-            return 1
+            return self.checkEverything()
         return 0
 
 
