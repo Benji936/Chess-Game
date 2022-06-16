@@ -15,8 +15,7 @@
 # plus le ratio bon coup/ bon coup suivant est grand plus notre coup est bon
 
 import copy
-from utils import convertStringInBoard
-from chessboard import Chessboard
+import time
 
 def willCheck(board,move):
     if board.check():
@@ -46,21 +45,22 @@ def willAttack(board,move):
     
     
 def ia(game,recursion,depth,value):
+    #start = time.time()
     if recursion > depth:
         return [value,None]
 
 
-    best = -100
-    bestMove = None
+    bestScoreOfAll = -100
+    best = None
+    bestOfTheBest = None
     for piece in game.pieces.values():
         if piece.color != game.turnColor():
             continue 
         #if recursion == 0:
             #print(piece,piece.color)
-        
+        bestScore = -100
         moves = piece.getPossibleMoves(game)
         #print(piece,piece.color,moves)
-
 
         for move in moves:
 
@@ -69,29 +69,30 @@ def ia(game,recursion,depth,value):
             boardCopy.turn += 1
 
             points = 0
+            
             points += willEat(game,move)
 
             points += willAttack(boardCopy,move)
 
             points += willCheck(boardCopy,move)
 
+            if bestScore < points:
+                bestScore = points
+                best = (move,boardCopy,points)
+
+        if moves:
+            points = best[2]
             if recursion%2:
-                #print("Before", points)
-                points += ia(boardCopy,recursion+1,depth,points)[0]
-                #print("After", points)
+                points += ia(best[1],recursion+1,depth,points)[0]
             else:
-                #print("Before", points)
-                points -= ia(boardCopy,recursion+1,depth,points)[0]
-                #print("After", points)
+                points -= ia(best[1],recursion+1,depth,points)[0]
 
-            #print(points,piece,piece.color)
-            
+            if bestScoreOfAll < points:
+                bestScoreOfAll = points
+                bestOfTheBest = best[0]
 
-            if best < points:
-                best = points
-                bestMove = move
-
-    return [best,bestMove]
+    #print(time.time()-start)
+    return [bestScoreOfAll,bestOfTheBest]
 
 
 

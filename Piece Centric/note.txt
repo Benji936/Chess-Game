@@ -1,3 +1,2 @@
-2 bugs:
-- roi echec par le cavalier sans être echec
-- Roque pas parfait, il manque la vérification qu'aucune des cases sur lesquels le roi ce déplace sont en échecs et que la tour n'est pas été déplacé
+Bugs:
+- On peut rock lorsqu'on est en échec

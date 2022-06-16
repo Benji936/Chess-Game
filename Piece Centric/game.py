@@ -3,7 +3,7 @@ from chessboard import Chessboard
 from IA import ia
 from utils import *
 import sys
-
+import time
 
 
 
@@ -19,18 +19,28 @@ if __name__ == "__main__":
     
 
     convertStringInBoard(game,"RNBQKBNR/PPPPPPPP/////pppppppp/rnbqkbnr")  
-    update(screen,cellScale,game.pieces)
+    #update(screen,cellScale,game.pieces)
 
     pieceSelected = 0
     select = game.getPiece(0,0)
 
     while 1:
 
-        for event in pygame.event.get():
+        move = ia(game,0,2,0)[1]
+        print(move)
+        if move:
+            move.applyMove(game)
+            game.turn += 1
+            if game.checkEverything() < 0:
+                exit()
 
-            if event.type == pygame.QUIT: sys.exit()
+        update
 
-            if event.type == pygame.MOUSEBUTTONUP and game.turnColor() == "white":
+        #for event in pygame.event.get():
+
+            #if event.type == pygame.QUIT: sys.exit()
+
+        """if event.type == pygame.MOUSEBUTTONUP and game.turnColor() == "white":
                 
                 pos = pygame.mouse.get_pos()
 
@@ -65,20 +75,15 @@ if __name__ == "__main__":
                             drawSquare(pos1,pos2,cellScale,selected_white,selected_black,screen)
                             select.display(screen,cellScale)
                             displayMoves(select,cellScale,game,screen)
-                            pieceSelected = 1
+                            pieceSelected = 1"""
 
-            elif game.turnColor() == "black":
-                move = ia(game,0,1,0)[1]
-                print(move)
-                if move:
-                    move.applyMove(game)
-                    game.turn += 1
-                    if game.checkEverything() < 0:
-                        exit()
-                    update(screen,cellScale,game.pieces)
+            #if game.turnColor() == "black":
+
+        
+                #update(screen,cellScale,game.pieces)
                 
 
 
-
+        update(screen,cellScale,game.pieces)
         pygame.display.flip()
     
