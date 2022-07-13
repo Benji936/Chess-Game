@@ -1,2 +1,3 @@
 # Chess-Game
-Chess game in python
+Chess game in python and C
+
